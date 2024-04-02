@@ -23,7 +23,6 @@ recipe.get("/", async (req, res) => {
 
 recipe.get("/:id", async (req, res) => {
   const { id } = req.params;
-  
 
   try {
     const recipe = await getSingleRecipe(id);
@@ -36,10 +35,11 @@ recipe.get("/:id", async (req, res) => {
 
 recipe.post("/", validateRecipe, async (req, res) => {
   const body = req.body;
-  console.log("Received request body:", body);
+  // console.log("Received request body:", body);
+  const recipe = await createRecipe(body);
+console.log(recipe)
   try {
-    const recipe = await createRecipe(body);
-
+    
     res.status(201).json({ payload: recipe });
   } catch (error) {
     res.status(404).json({ payload: error });
@@ -56,15 +56,13 @@ recipe.delete("/:id", async (req, res) => {
   }
 });
 
-
-recipe.put('/:id', async (req, res)=>{
-  const updateRecipe = await updateRecipeById(req.params.id, req.params.body)
-
+recipe.put("/:id", async (req, res) => {
   try {
-    res.status(200).json({payload: updateRecipe})
+    const updateRecipe = await updateRecipeById(req.params.id, req.params.body);
+    res.status(200).json({ payload: updateRecipe });
   } catch (error) {
-    res.status(404).json({payload: error})
+    res.status(404).json({ payload: error });
   }
-})
+});
 
 module.exports = recipe;

@@ -23,7 +23,7 @@ const getSingleRecipe = async (id) => {
 const createRecipe = async ({ name, image_url, description }) => {
   try {
     const recipe = await db.one(
-      `insert into recipes (title, image_url, description) values($1, $2, $3) returning *`,
+      `insert into recipes (name, image_url, description) values($1, $2, $3) returning *`,
       [name, image_url, description]
     );
 
