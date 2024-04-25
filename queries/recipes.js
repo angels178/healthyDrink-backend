@@ -12,7 +12,7 @@ const getAllRecipes = async () => {
 
 const getSingleRecipe = async (id) => {
   try {
-    const recipe = await db.any(`select * from recipes where id = $1`, id);
+    const recipe = await db.one(`select * from recipes where id = $1`, id);
 
     return recipe;
   } catch (error) {
@@ -20,11 +20,18 @@ const getSingleRecipe = async (id) => {
   }
 };
 
-const createRecipe = async ({ name, image_url, description }) => {
+const createRecipe = async ({
+  name,
+  description,
+  ingredients,
+  prep_time,
+  cooking_time,
+  serving,
+}) => {
   try {
     const recipe = await db.one(
-      `insert into recipes (name, image_url, description) values($1, $2, $3) returning *`,
-      [name, image_url, description]
+      `insert into recipes (name, description, ingredients, prep_time, cooking_time, serving) values($1, $2, $3, $4, $5, $6) returning *`,
+      [name, description, ingredients, prep_time, cooking_time, serving]
     );
 
     return recipe;
@@ -35,7 +42,7 @@ const createRecipe = async ({ name, image_url, description }) => {
 
 const deleteRecipeById = async (id) => {
   try {
-    const deleteRecipe = await db.any(
+    const deleteRecipe = await db.one(
       `delete from recipes where id = $1 returning *`,
       id
     );
@@ -46,11 +53,13 @@ const deleteRecipeById = async (id) => {
   }
 };
 
-const updateRecipeById = async ({ id, name, image_url, description }) => {
+const updateRecipeById = async (id, body) => {
+  const { name, description, ingredients, prep_time, cooking_time, serving } =
+    body;
   try {
     const updateRecipe = await db.any(
-      `update recipe set title = $1, image_url = $2, description = $3 where id = $4 returning *`,
-      [name, image_url, description, id]
+      `update recipes set name = $1, description = $2, prep_time = $3, cooking_time = $4, serving = $5 where id = $6 returning *`,
+      [name, description, ingredients, prep_time, cooking_time, serving, id]
     );
 
     return updateRecipe;

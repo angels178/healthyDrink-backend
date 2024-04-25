@@ -7,6 +7,9 @@ CREATE DATABASE love_cusine_recipes_dev;
 CREATE TABLE recipes (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    image_url TEXT,
-    description TEXT
+    description TEXT,
+    ingredients TEXT NOT NULL,
+    prep_time TEXT,
+    cooking_time TEXT, 
+    serving INT
 );
