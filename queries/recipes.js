@@ -58,7 +58,7 @@ const updateRecipeById = async (id, body) => {
     body;
   try {
     const updateRecipe = await db.any(
-      `update recipes set name = $1, description = $2, prep_time = $3, cooking_time = $4, serving = $5 where id = $6 returning *`,
+      `update recipes set name = $1, description = $2, ingredients = $3, prep_time = $4, cooking_time = $5, serving = $6 where id = $7 returning *`,
       [name, description, ingredients, prep_time, cooking_time, serving, id]
     );
 
